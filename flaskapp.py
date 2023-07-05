@@ -36,8 +36,8 @@ def image():
     return render_template("image.html")
 
 
-@app.route("/download")
-def download():
+@app.route("/download_image")
+def download_image():
     folder_path = "runs/detect"
     subfolders = [
         f
@@ -65,6 +65,8 @@ def download():
     else:
         return "Invalid file format"
 
+
+     
 
 @app.route("/image_detection", methods=["GET", "POST"])
 def predict_img():
@@ -191,7 +193,12 @@ def front():
 
     return render_template("video.html", form=form)
 
+@app.route("/download_video")
+def download_video():
+     filename = 'output.mp4'
 
+     return send_file(filename, as_attachment=True)
+ 
 @app.route("/video")
 def video():
     print("function called")

@@ -126,7 +126,7 @@
                             name="form1"
                           >
                             <h1 class="h3 mb-3 font-weight-normal">
-                              Upload any image
+                              Upload any Video
                             </h1>
                             <div class="mb-3">
                               {{form.hidden_tag()}}
@@ -140,6 +140,9 @@
                             >
                               Upload
                             </button>
+                            <a class="btn  btn-lg btn-success" href="{{url_for('download_video')}}"
+                      >Download</a
+                    >
                             <p class="mt-5 mb-3 text-muted text-center">
                               Built using Pytorch & Flask
                             </p>
