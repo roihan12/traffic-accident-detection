@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, jsonify, request, session
+from flask import Flask,flash, render_template, Response, jsonify, request, session
 from flask_wtf import FlaskForm
 from flask import (
     Flask,
@@ -17,8 +17,9 @@ from wtforms import (
     DecimalRangeField,
     IntegerRangeField,
 )
-from werkzeug.utils import secure_filename
 from wtforms.validators import InputRequired, NumberRange
+from flask import Flask, flash, request, redirect, url_for
+from werkzeug.utils import secure_filename
 import os
 import cv2
 from YOLO_Video import video_detection
@@ -29,76 +30,48 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "roihansori"
 app.config["UPLOAD_FOLDER"] = "static/files"
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route("/image_detection")
+@app.route("/image_upload")
 def image():
+    session.clear()
     return render_template("image.html")
 
-
-@app.route("/download_image")
-def download_image():
-    folder_path = "runs/detect"
-    subfolders = [
-        f
-        for f in os.listdir(folder_path)
-        if os.path.isdir(os.path.join(folder_path, f))
-    ]
-    latest_subfolder = max(
-        subfolders, key=lambda x: os.path.getctime(os.path.join(folder_path, x))
-    )
-    directory = folder_path + "/" + latest_subfolder
-    print("printing directory: ", directory)
-    files = os.listdir(directory)
-    latest_file = files[0]
-
-    print(latest_file)
-    filename = os.path.join(folder_path, latest_subfolder, latest_file)
-
-    file_extension = filename.rsplit(".", 1)[1].lower()
-
-    environ = request.environ
-    if file_extension == "jpg":
-        return send_file(
-            filename, as_attachment=True
-        )  # shows the result in separate tab
-    else:
-        return "Invalid file format"
-
-
-     
-
-@app.route("/image_detection", methods=["GET", "POST"])
+@app.route("/image_upload", methods=["GET", "POST"])
 def predict_img():
     if request.method == "POST":
-        if "file" in request.files:
-            f = request.files["file"]
+        
+         if "file" in request.files:
+            file = request.files["file"]
+            
             basepath = os.path.dirname(__file__)
-            filepath = os.path.join(basepath, "uploads", f.filename)
+            filename = secure_filename(file.filename)
+            filepath = os.path.join(basepath, app.config["UPLOAD_FOLDER"], filename)
             print("upload folder is ", filepath)
-            f.save(filepath)
+            file.save(filepath)
             global imgpath
 
-            predict_img.imgpath = f.filename
+            predict_img.imgpath = file.filename
             print("printing predict_img ::::::::::::", predict_img)
 
-            file_extension = f.filename.rsplit(".", 1)[1].lower()
+            file_extension = file.filename.rsplit(".", 1)[1].lower()
 
-            if file_extension == "jpg":
+            if file_extension not in ALLOWED_EXTENSIONS:
+                return render_template("invalid.html")
+                
+            if file and allowed_file(file.filename):
                 detections = process_image(filepath)
-                return display(f.filename)
+                return display(file.filename)
 
-    folder_path = "runs/detect"
-    subfolders = [
-        f
-        for f in os.listdir(folder_path)
-        if os.path.isdir(os.path.join(folder_path, f))
-    ]
-    latest_subfolder = max(
-        subfolders, key=lambda x: os.path.getctime(os.path.join(folder_path, x))
-    )
-    image_path = folder_path + "/" + latest_subfolder + "/" + f.filename
-    return render_template("index.html", image_path=image_path)
+            folder_path = "runs/detect"
+            subfolders = [ f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
+            latest_subfolder = max( subfolders, key=lambda x: os.path.getctime(os.path.join(folder_path, x)))
+            image_path = folder_path + "/" + latest_subfolder + "/" + file.filename
+            return render_template("image.html", image_path=image_path)
     # return "done"
 
 
@@ -131,6 +104,37 @@ def display(filename):
     else:
         return "Invalid file format"
 
+
+@app.route("/download_image")
+def download_image():
+    folder_path = "runs/detect"
+    subfolders = [
+        f
+        for f in os.listdir(folder_path)
+        if os.path.isdir(os.path.join(folder_path, f))
+    ]
+    latest_subfolder = max(
+        subfolders, key=lambda x: os.path.getctime(os.path.join(folder_path, x))
+    )
+    directory = folder_path + "/" + latest_subfolder
+    print("printing directory: ", directory)
+    files = os.listdir(directory)
+    latest_file = files[0]
+
+    print(latest_file)
+    filename = os.path.join(folder_path, latest_subfolder, latest_file)
+
+    file_extension = filename.rsplit(".", 1)[1].lower()
+
+    environ = request.environ
+    if file_extension == "jpg":
+        return send_file(
+            filename, as_attachment=True
+        )  # shows the result in separate tab
+    else:
+        return "Invalid file format"
+    
+    
 
 # Use FlaskForm to get input video file  from user
 class UploadFileForm(FlaskForm):
