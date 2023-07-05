@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Traffic Accident Detection YOLOv8</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+     <!-- ===== All CSS files ===== -->
+
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/lineicons.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/ud-styles.css') }}">
+  </head>
+  <body>
+
+       
+        <!-- ====== Header Start ====== -->
+    <header class="ud-header">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <nav class="navbar navbar-expand-lg">
+              <a class="navbar-brand ud-menu-scroll" href="/">
+                Traffic Accident Detection
+              </a>
+              <button class="navbar-toggler">
+                <span class="toggler-icon"> </span>
+                <span class="toggler-icon"> </span>
+                <span class="toggler-icon"> </span>
+              </button>
+
+              <div class="navbar-collapse">
+                <ul id="nav" class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="ud-menu-scroll" href="/"> <i class="bi bi-house" style="font-size: 1.5rem;"></i> Home</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="ud-menu-scroll" href="#contact"><i class="bi bi-github" style="font-size: 1.5rem;" ></i> Github</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+        <!-- ====== Header End ====== -->
+    
+        <!-- ====== Hero Start ====== -->
+    <section class="ud-hero" id="home">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="ud-hero-content wow fadeInUp" data-wow-delay=".2s">
+              <h1 class="ud-hero-title">
+                Traffic Acident Detection with Using Yolov8
+              </h1>
+              <p class="ud-hero-desc">
+                Whether you choose to upload a video or use your webcam in real-time, get ready for an advanced 
+                      object detection and classification system for traffic accident. With this system, traffic accident such as car crash
+                      motorcyle crash, and car vs motorbike crash can be accurately identified. Making the traffic accident more 
+                      efficient and effective. 
+              </p>
+              <ul class="ud-hero-buttons">
+                <li>
+                  <a href="#features" rel="nofollow noopener" class="ud-main-btn ud-white-btn">
+                    Try Now
+                  </a>
+                </li>
+                <li>
+                  <a href="" rel="nofollow noopener" target="_blank" class="ud-main-btn ud-link-btn">
+                    Learn More <i class="lni lni-arrow-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="ud-hero-brands-wrapper wow fadeInUp"
+              data-wow-delay=".3s">
+            </div>
+            <div class="ud-hero-image wow fadeInUp" data-wow-delay=".25s">
+              
+      
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- ====== Hero End ====== -->
+
+  
+<!-- ====== Features Start ====== -->
+<section id="features" class="ud-features">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="ud-section-title">
+          <span>Features</span>
+          <h2>Main Features of Traffic Accident Detection</h2>
+          <p>
+            Traffic Accident Detection can detect by image, video, or realtime detection use webcam
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xl-3 col-lg-3 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".1s">
+          <div class="ud-feature-icon">
+            <i class="bi bi-image" style="font-size: 1.5rem;" ></i> 
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">Image</h3>
+            <p class="ud-feature-desc">
+              Lorem Ipsum is simply dummy text of the printing and industry.
+            </p>
+            <a class="btn btn-outline-primary btn-sm px-4"  href="/image_detection">Try</a>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".15s">
+          <div class="ud-feature-icon">
+            <i class="bi bi-play-btn" style="font-size: 1.5rem;" ></i>
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">Video</h3>
+            <p class="ud-feature-desc">
+              Lorem Ipsum is simply dummy text of the printing and industry.
+            </p>
+            <a class="btn btn-outline-primary btn-sm px-4"  href="/video_detection">Try</a>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".2s">
+          <div class="ud-feature-icon">
+            <i class="bi bi-camera" style="font-size: 1.5rem;" ></i>
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">Webcam</h3>
+            <p class="ud-feature-desc">
+              Lorem Ipsum is simply dummy text of the printing and industry.
+            </p>
+            <a class="btn btn-outline-primary btn-sm px-4"  href="/webcam_detection">Try</a>
+          </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-sm-6">
+        <div class="ud-single-feature wow fadeInUp" data-wow-delay=".25s">
+          <div class="ud-feature-icon">
+            <i class="lni lni-layers"></i>
+          </div>
+          <div class="ud-feature-content">
+            <h3 class="ud-feature-title">Model Info</h3>
+            <p class="ud-feature-desc">
+              Lorem Ipsum is simply dummy text of the printing and industry.
+            </p>
+            <a class="btn btn-outline-primary btn-sm px-4"  href="/webcam_detection">Learn</a>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ====== Features End ====== -->
+
+  <!-- Features section-->
+  <section class="ud-about" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="ud-section-title mx-auto text-center">
+            <span>How to use</span>
+            <h2>Traffic Accident Detection</h2>
+            <p>
+              There are many variations of passages of Lorem Ipsum available
+              but the majority have suffered alteration in some form.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="container">
+          <div class="row gx-5">
+              <div class="col-lg-4 mb-5 mb-lg-0 ">
+                  <div class="feature  bg-gradient text-white rounded-3 mb-3 deneme"><i class="bi bi-patch-question-fill"></i></div>
+                  <h2 class="h4 fw-bolder">Problem</h2>
+                  <p>
+                      People consume products that they produce by using natural resources. Most of these products are thrown away as waste after use, 
+                      and as the amount of waste increases day by day, natural resources are rapidly depleting .
+                     </p>
+                  
+              </div>
+              <div class="col-lg-4 mb-5 mb-lg-0">
+                  <div class="feature  bg-gradient text-white rounded-3 mb-3 deneme"><i class="bi bi-globe"></i></div>
+                  <h2 class="h4 fw-bolder">Solution</h2>
+                  <p>Recycling can reduce the consumption of natural resources and minimize 
+                      the impact of waste on the environment. However, the recycling process is complex and expensive, and therefore, 
+                      adequate recycling cannot be done in many countries. This leads to further environmental problems. 
+                      The aim of this study is to support recycling projects without human power.</p>
+                  
+              </div>
+              <div class="col-lg-4">
+                  <div class="feature bg-gradient text-white rounded-3 mb-3 deneme"><i class="bi bi-stars"></i></div>
+                  <h2 class="h4 fw-bolder">Guide</h2>
+                  <p>This project, visual detection and classification of 
+                      recyclable materials can be performed in uploaded videos and real-time video
+                      4 classes are determined as metal, plastic, paper and glass.
+                      You can also read and download the report written about the project.</p>
+                  
+              </div>
+          </div>
+      </div>
+  </section>
+ 
+  <!-- Footer-->
+  <footer class="ud-footer wow fadeInUp">
+    <div class="ud-footer-bottom">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8">
+            <ul class="ud-footer-bottom-left">
+              <li>
+                <a href="javascript:void(0)">Privacy policy</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)">Support policy</a>
+              </li>
+              <li>
+                <a href="javascript:void(0)">Terms of service</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <p class="ud-footer-bottom-right">
+              Designed and Developed by
+              <a href="" rel="nofollow">Roihan Sori</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JS
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+  -->
+
+
+
+
+    <!-- ====== Back To Top Start ====== -->
+    <a href="javascript:void(0)" class="back-to-top">
+      <i class="lni lni-chevron-up"> </i>
+    </a>
+    <!-- ====== Back To Top End ====== -->
+
+    <!-- ====== All Javascript Files ====== -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js')}}"></script> 
+    <script src="{{ url_for('static', filename='js/wow.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/main.js')}}"></script>
+
+    <script>
+      // ==== for menu scroll
+      const pageLink = document.querySelectorAll(".ud-menu-scroll");
+
+      pageLink.forEach((elem) => {
+        elem.addEventListener("click", (e) => {
+          e.preventDefault();
+          document.querySelector(elem.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+            offsetTop: 1 - 60,
+          });
+        });
+      });
+
+      // section menu active
+      function onScroll(event) {
+        const sections = document.querySelectorAll(".ud-menu-scroll");
+        const scrollPos =
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop;
+
+        for (let i = 0; i < sections.length; i++) {
+          const currLink = sections[i];
+          const val = currLink.getAttribute("href");
+          const refElement = document.querySelector(val);
+          const scrollTopMinus = scrollPos + 73;
+          if (
+            refElement.offsetTop <= scrollTopMinus &&
+            refElement.offsetTop + refElement.offsetHeight > scrollTopMinus
+          ) {
+            document
+              .querySelector(".ud-menu-scroll")
+              .classList.remove("active");
+            currLink.classList.add("active");
+          } else {
+            currLink.classList.remove("active");
+          }
+        }
+      }
+
+      window.document.addEventListener("scroll", onScroll);
+    </script>
+  </body>
+</html>
