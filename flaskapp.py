@@ -24,6 +24,9 @@ import os
 import cv2
 from YOLO_Video import video_detection
 from YOLO_Video import process_image
+from YOLO_Video import webcam_detection
+import datetime, time
+from threading import Thread
 
 
 app = Flask(__name__)
@@ -32,11 +35,30 @@ app.config["SECRET_KEY"] = "roihansori"
 app.config["UPLOAD_FOLDER"] = "static/files"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
+
+global capture,rec_frame, grey, switch, neg, face, rec, out 
+capture=0
+grey=0
+neg=0
+face=0
+switch=1
+rec=0
+
+camera = cv2.VideoCapture(0)
+
+
+@app.route("/", methods=["GET", "POST"])
+@app.route("/home", methods=["GET", "POST"])
+def home():
+    session.clear()
+    return render_template("index.html")
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route("/image_upload")
+@app.route("/image_upload", methods=["GET"])
 def image():
     session.clear()
     return render_template("image.html")
@@ -65,7 +87,7 @@ def predict_img():
                 
             if file and allowed_file(file.filename):
                 detections = process_image(filepath)
-                return display(file.filename)
+                # return display(file.filename)
 
             folder_path = "runs/detect"
             subfolders = [ f for f in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, f))]
@@ -150,30 +172,8 @@ def generate_frames(path_x=""):
             break
         frame = buffer.tobytes()
         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
-
-
-def generate_frames_web(path_x):
-    yolo_output = video_detection(path_x)
-    for detection_ in yolo_output:
-        ref, buffer = cv2.imencode(".jpg", detection_)
-
-        frame = buffer.tobytes()
-        yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
-
-
-@app.route("/", methods=["GET", "POST"])
-@app.route("/home", methods=["GET", "POST"])
-def home():
-    session.clear()
-    return render_template("index.html")
-
-
-@app.route("/webcam_detection", methods=["GET", "POST"])
-def webcam():
-    session.clear()
-    return render_template("webcam.html")
-
-
+        
+        
 @app.route("/video_detection", methods=["GET", "POST"])
 def front():
     # Upload File Form: Create an instance for the Upload File Form
@@ -197,6 +197,7 @@ def front():
 
     return render_template("video.html", form=form)
 
+
 @app.route("/download_video")
 def download_video():
      filename = 'output.mp4'
@@ -213,15 +214,116 @@ def video():
     )
 
 
+#### Webcam Route
+
+# def generate_frames_web(path_x):
+#     if path_x == 3 :
+#          print("Error: 'path_x' is empty. Please provide a valid path.")
+#          return
+#     yolo_output = webcam_detection(path_x)
+#     for detection_ in yolo_output:
+#         ref, buffer = cv2.imencode(".jpg", detection_)
+#         if not ref:
+#             break
+#         frame = buffer.tobytes()
+#         yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
+    
+ 
+ 
+ 
+def gen_frames(): # generate frame by frame from camera
+    while True:
+        success, frame = camera.read()
+        if not success :
+            break    
+        else:
+            yolo_output = webcam_detection(frame)
+            for detection_ in yolo_output:
+                ref, buffer = cv2.imencode(".jpg", detection_)
+                if not ref:
+                    break
+                frame = buffer.tobytes()
+                yield (b"--frame\r\n" b"Content-Type: image/jpeg\r\n\r\n" + frame + b"\r\n\r\n")
+                            
+ 
+@app.route("/webcam_detection", methods=["GET", "POST"])
+def webcam():
+    session.clear()
+    return render_template("webcam.html")
+
+
+    
+# @app.route('/video_feed')
+# def video_feed():
+#     return Response(generate_frames_web(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype="multipart/x-mixed-replace; boundary=frame")
+
 # To display the Output Video on Webcam page
-@app.route("/webapp")
-def webapp():
-    # return Response(generate_frames(path_x = session.get('video_path', None),conf_=round(float(session.get('conf_', None))/100,2)),mimetype='multipart/x-mixed-replace; boundary=frame')
-    return Response(
-        generate_frames_web(path_x=0),
-        mimetype="multipart/x-mixed-replace; boundary=frame",
-    )
+# @app.route("/webapp",  methods=['POST','GET'])
+# def webapp():
+#     # return Response(generate_frames(path_x = session.get('video_path', None),conf_=round(float(session.get('conf_', None))/100,2)),mimetype='multipart/x-mixed-replace; boundary=frame')
+#     if request.method == 'POST':
+#         if  request.form.get('start') == 'Start':
+#            return Response(generate_frames_web(path_x=0), mimetype="multipart/x-mixed-replace; boundary=frame")
+#     if request.method == 'POST':
+#          if  request.form.get('stop') == 'Stop':
+#              return Response(generate_frames_web(path_x=3), mimetype="multipart/x-mixed-replace; boundary=frame")      
+#     elif request.method =='GET':
+#         return render_template('webcam.html')
+#     return render_template('webcam.html')
+
+
+
+@app.route('/requests',methods=['POST','GET'])
+def tasks():
+    global switch,camera
+    if request.method == 'POST':
+        if  request.form.get('face') == 'Face Only':
+            global face
+            face=not face 
+            if(face):
+                time.sleep(4)   
+        elif  request.form.get('stop') == 'Stop/Start':
+            
+            if(switch==1):
+                switch=0
+                camera.release()
+                cv2.destroyAllWindows()
+                
+            else:
+                camera = cv2.VideoCapture(0)
+                switch=1
+                                       
+    elif request.method=='GET':
+       return render_template('webcam.html')
+    return render_template('webcam.html')
+
+# @app.route('/requests',methods=['POST','GET'])
+# def tasks():
+#     global switch,camera
+#     if request.method == 'POST':
+#         if  request.form.get('stop') == 'Stop/Start':
+            
+#             if(switch==1):
+#                 switch=0
+#                 camera.release()
+#                 cv2.destroyAllWindows()
+                
+#             else:
+#                 camera = cv2.VideoCapture(0)
+#                 switch=1
+                                       
+#     elif request.method=='GET':
+#         return render_template('webcam.html')
+#     return render_template('webcam.html')
+
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
+
+camera.release()
+cv2.destroyAllWindows()

@@ -238,7 +238,6 @@ p {
 
 .navbar-brand {
   padding: 0;
- 
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px),
@@ -844,7 +843,7 @@ p {
 }
 
 .ud-about-content {
-  max-width: 500px;
+  max-width: 800px;
 }
 
 .ud-about-content .tag {

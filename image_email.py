@@ -9,8 +9,8 @@ def SendMail(ImgFileName):
     img_data = open(ImgFileName, "rb").read()
     msg = MIMEMultipart()
     msg["Subject"] = "Crash Alert"
-    msg["From"] = "roihansori34@gmail.com.cc"
-    msg["To"] = "roihansori12@gmail.com.cc"
+    msg["From"] = "xxxx@gmail.com.cc"
+    msg["To"] = "xxxxxx@gmail.com.cc"
 
     text = MIMEText("Vehicle Crash Detected. Send HELP")
     msg.attach(text)
@@ -21,6 +21,6 @@ def SendMail(ImgFileName):
     s.ehlo()
     s.starttls()
     s.ehlo()
-    s.login("roihansori34@gmail.com", "password")
-    s.sendmail("roihansori34@gmail.com", "roihansori12@gmail.com", msg.as_string())
+    s.login("xxxxx@gmail.com", "xxxxxxx")
+    s.sendmail("xxxxxx@gmail.com", "xxxxxxx@gmail.com", msg.as_string())
     s.quit()

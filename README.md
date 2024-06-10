@@ -1,1 +1,119 @@
-# traffic-accident-detection
+# Traffic Accident Detection
+
+Traffic Accident Detection Detection Using [YOLOv8](https://docs.ultralytics.com/)
+
+
+
+This is a project to perform vehicle crash detection detection from image , video or  CCTV cameras in real-time.
+
+## How YOLO works ?
+
+
+Introducing Ultralytics YOLOv8, the latest version of the acclaimed real-time object detection and image segmentation model. YOLOv8 is built on cutting-edge advancements in deep learning and computer vision, offering unparalleled performance in terms of speed and accuracy. Its streamlined design makes it suitable for various applications and easily adaptable to different hardware platforms, from edge devices to cloud APIs.
+
+YOLO stands for You Only Look Once. It is used for object detection
+To perform object detection on an image it looks at an image only once in a very clever way unlike R-CNN which takes several instances of the same image to perform detection. 
+
+YOLO divides an image into a grid and several bounding boxes are formed. Then a confidence score is taken for each boundary box to see whether an bounding box contains any object within it. The confidence score is high if the object inside the box matches the pre-trained YOLO dataset ( [COCO Dataset](https://cocodataset.org/) ). The higher the confidence score, the higher the probability that a bounding box contains an object. Now several bounding boxes will intersect with each other. More the bounding boxes intersect, more is the probability that there is an object inside that box. Now we only keep those bounding boxes whose confidence score is more than threshold value lets say 30%. Now we match these bounding boxes with already known features of an object like person, car and classify them.
+
+The good thing about YOLO is that all the predictions in the boxes are made at the same time i.e. the neural networks just ran only once.
+And that is why YOLO is powerful and fast.
+
+##  Setup and Installation
+
+### Softwares Required
+* Python: Language in which code is written
+* CMake: For compiling openCV
+* Visual Studio Code: For building openCV and darknet code
+* Nvidia GPU Driver: For faster GPU performance
+* CUDA: For parallel computing using GPU
+* CuDNN: A GPU-accelerated library of primitives for deep neural networks
+* OpenCV: For working on images/videos in python
+
+
+There are four ways to perform detection on videos:
+1. Video from Web Cam
+2. Local Stored Video
+3. Video from Mobile Camera ( [DroidCam](https://www.dev47apps.com/) )
+
+See the code of the program and uncomment the line from which you want to take the  video to perform detection.
+
+
+
+### Install Git and Python
+
+Follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) to install Git on your computer. Also follow this [guide](https://realpython.com/installing-python/) to install Python **VERSION 3.9** if you haven't already. Using other versions of Python may result in dependency conflicts.
+
+
+### Clone traffic-accident-detection repository
+For those who want to run this locally, follow the setup guide below.
+
+Open a command line window and run these commands to clone this entire repository and install the additional dependencies required.
+
+```
+git clone https://github.com/roihan12/traffic-accident-detection.git
+cd traffic-accident-detection
+pip install -r requirements.txt
+```
+
+
+
+## Colab notebook
+
+For colab users, simply click `Runtime` in the top navigation bar of the colab notebook and `Disconnect and delete runtime` in the dropdown menu. 
+Then follow the instructions in the notebook to run.
+
+For those without a powerful enough NVIDIA GPU, you may try run using Google Colab.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/SociallyIneptWeeb/AICoverGen/blob/main/AICoverGen_colab.ipynb)
+
+
+
+## Object Detection
+### Working
+Simple YOLO program for object detection.
+
+### Running the script:
+```python
+python flaskapp.py
+```
+### Sample Output:
+![Alt text](https://github.com/vibhorkrishna/S.H.A.D.Y/blob/main/Screenshots/object.PNG?raw=true)
+
+## Vehicle Crash Detection
+### Working
+We take the input video from a source and  divide the video into several frames. Now these frames are converted into black and white. On each frame a car is detected using YOLO. 
+
+Now we write the code to draw rectangles on the detected cars. We check the distances between each detected car on the frame from each other. If the distance between the two cars is less than a particular value and the rectangle boxes of any two cars intersect each other then we colour the box red display the message that Crash has been detected. 
+
+All of the above process happens for a single frame. Now all of this is set in a loop for each frame of the video and Vehicle crash is detected.
+
+### Alert Generation
+If the car crash is detected in of a video simultaneously then an alert is generated by sending an email to the required person. That email also contains the photo of the car crash that was detected.
+#### [Note-1: Edit the sender's and receiver's email id in ```image_email.py``` file]
+#### [Note-2: Make sure that ```2 step verification``` is ```OFF``` and ```less secure app access``` is ```ON``` for your email account]
+
+
+## Project Deployment
+We have deployed our project using flask. When we run the below script, our website is hosted onto a local server and we can use that website to perform detections on videos.
+### Running the script:
+```python
+python flaskapp.py
+```
+
+## Traffic Accident Detection
+
+### Home Page
+![Alt text](https://ik.imagekit.io/roihan/Detail_Images/traffic/home.png?updatedAt=1716207269907)
+### Real time Object Detection Page
+![Alt text](https://ik.imagekit.io/roihan/Detail_Images/traffic/webcam.png?updatedAt=1716207270605)
+### Video Detection Page
+![Alt text](https://ik.imagekit.io/roihan/Detail_Images/traffic/video.png?updatedAt=1716207270390)
+### Image Detection Page
+![Alt text](https://ik.imagekit.io/roihan/Detail_Images/traffic/image.png?updatedAt=1716207270213)
+
+
+
+## Future Work
+* Improve the vehicle crash detection model
+* Currently website is deployed locally using flask and uses our own computer's GPU. As our code uses GPU, it would cost us money to deploy our website on cloud servers like Google Cloud and AWS. But our future goal is to deploy the website globally from Google Cloud by using their GPU's.
